@@ -6,7 +6,6 @@ import MongoStore from 'connect-mongo';
 import { connectToDB } from './models/db.js';
 import { appConfig } from './config.js';
 import { apiRouter } from './routes/index.js';
-// import  passportConfig  from './passport.js';
 import passportConfig  from './passport.js';
 
 const app = express();
@@ -19,7 +18,7 @@ app.use(express.json());
 passportConfig(passport);
 
 app.use(cors({
-  origin: 'http://localhost:3000',//chage to the domain name in production
+  origin: 'http://localhost:3000',//change to the domain name in production
   credentials: true
 }));
 
@@ -58,14 +57,13 @@ app.use((req, res) => {
    });
 });
 
-
-// Global error handler for unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  console.log('Index.js: Unhandled Rejection at:', promise, 'reason:', reason);
-});
 // General error handler for uncaught errors
 app.use((err, req, res,next) => {
   res.status(500).json({ message: 'Oops! Something went wrong!, Contact the Admin' });
+});
+// Global error handler for unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  // console.log('Index.js: Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 app.listen(appConfig.PORT, () => {

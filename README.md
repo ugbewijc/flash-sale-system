@@ -27,13 +27,7 @@ cd flash-sale-system
 ```
 ### 3. Set Up Environment Variables
 
-Rename .env.example file to .env or create a `.env`file in the root of the project and add the following environment variables and their values:
-```` sh
-HOST=
-PORT= 
-#MONGO_URI is required
-MONGO_URI=    
-````
+Rename .env.example file to .env or create a `.env`file in the root of the project and add the environment variables values:
 
 #### 4. Run the following command to start the development environment:
    ```sh
@@ -58,14 +52,29 @@ pnpm install
 ```
 
 #### 3. Set Up Environment Variables
-Rename .env.example file to .env or create a `.env`file in the root of the project and add the following environment variables and their values:
-```` sh
-HOST=
-PORT= 
-#MONGO_URI is required
-MONGO_URI=    
-````
+
+Rename .env.example file to .env or create a `.env`file in the root of the project and add the environment variables values:
+
 #### 4. Run the following command to start the development environment:
    ```sh
    pnpm dev
    ```
+
+
+## API Endpoints
+**Note:** 
+
+All successful response have the structure below
+   ```json
+   {
+      "status": <Number>,//valid repsones status code
+      "data": <Array>,//Requested records
+   }
+```
+All Fail Request have the structure below
+   ```json
+   {
+      "status": <Number>,//valid repsones status code
+      "errors": <Array>,//Array of Error Messages
+   }
+```

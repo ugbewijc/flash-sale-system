@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+// import helmet from 'helmet';
+import helmet from 'helmet'
 import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -15,10 +17,11 @@ connectToDB();
 
 // Middleware
 app.use(express.json());
+app.use(helmet());
 passportConfig(passport);
 
 app.use(cors({
-  origin: 'http://localhost:3000',//change to the domain name in production
+  origin: '127.0.0.1:3000',//change to the domain name in production
   credentials: true
 }));
 
@@ -61,6 +64,7 @@ app.use((req, res) => {
 app.use((err, req, res,next) => {
   res.status(500).json({ message: 'Oops! Something went wrong!, Contact the Admin' });
 });
+
 // Global error handler for unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   // console.log('Index.js: Unhandled Rejection at:', promise, 'reason:', reason);

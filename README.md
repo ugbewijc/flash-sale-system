@@ -78,3 +78,28 @@ All Fail Request have the structure below
       "errors": <Array>,//Array of Error Messages
    }
 ```
+
+### General Endpoints
+
+- **Login** - *Get /api/login*
+- **Logout** - *POST /api/logout*
+### Customer Endpoints
+- **Customer Dashboard** - *Get /api/dashboard*
+- **Register Customer** - *POST /api/register*
+- **Retrivie Product** - *GET /api/products/:product_name*
+- **Retrivie All Products** - *GET admin/products*
+- **Purchase Product** - *GET /api/products/:product_name*
+
+
+### Admin Endpoints
+- **Register Admin** - *POST /api/register*
+- **Retrivie All Products** - *GET admin/products*
+- **Retrivie Product** - *GET /api/admin/products/:product_name*
+- **Add Product** - *POST /api/admin/products/:product_name*
+- **Update Product** - *POST /api/admin/products/:product_name*
+
+
+
+
+
+

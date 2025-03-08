@@ -1,6 +1,7 @@
 /**
  * 
  */
+import process from 'process';
 
 export const appConfig = {
     PORT: process.env.PORT || 3000,

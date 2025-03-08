@@ -1,6 +1,9 @@
+/**
+ * 
+ */
+import process from 'process';
 import express from 'express';
 import cors from 'cors';
-// import helmet from 'helmet';
 import helmet from 'helmet'
 import passport from 'passport';
 import session from 'express-session';
@@ -8,7 +11,7 @@ import MongoStore from 'connect-mongo';
 import { connectToDB } from './models/db.js';
 import { appConfig } from './config.js';
 import { apiRouter } from './routes/index.js';
-import passportConfig  from './passport.js';
+import passportConfig from './passport.js';
 
 const app = express();
 
@@ -27,16 +30,18 @@ app.use(cors({
 
 app.use(session({
   name: appConfig.COOKIE_NAME,
-    secret: appConfig.SS_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: appConfig.MONGO_URI }),
-    cookie: {
-      httpOnly: true,
-      secure: (appConfig.ENV === 'development' ? false : true),
-      sameSite: 'strict',
-      maxAge: 1000 * 60 * 60 * 24
-    }
+  secret: appConfig.SS_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: appConfig.MONGO_URI
+  }),
+  cookie: {
+    httpOnly: true,
+    secure: (appConfig.ENV === 'development' ? false : true),
+    sameSite: 'strict',
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -45,31 +50,36 @@ app.use(passport.session());
 app.use('/api', apiRouter);
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.json({
     success: true,
-    message: `Hello, Welcome to Flash Sale System API`,
+    data: {
+      message: `Hello, Welcome to Flash Sale System API`
+    },
   });
 });
 
 // General 404 handler for unmatched routes
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     success: false,
-    message: 'Not Found'
-   });
+    errors: ['Page Not Found']
+  });
 });
 
 // General error handler for uncaught errors
-app.use((err, req, res,next) => {
-  res.status(500).json({ message: 'Oops! Something went wrong!, Contact the Admin' });
+app.use((err, req, res) => {
+  res.status(500).json({
+    success: false,
+    errors: ['Oops! Something went wrong!, Contact the Admin']
+  });
 });
 
 // Global error handler for unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
-  // console.log('Index.js: Unhandled Rejection at:', promise, 'reason:', reason);
+  console.log('Index.js: Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 app.listen(appConfig.PORT, () => {
-  console.log('Server listening on port 3000');
+  console.log(`Server listening on port ${appConfig.PORT}`);
 });

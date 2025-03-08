@@ -2,7 +2,10 @@ export function ensureAuthenticated (req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.status(401).json({ message: 'Unauthorized' });
+    res.status(401).json({ 
+        success: false,
+        errors: ['Unauthorized'] 
+    });
 };
 
 export function ensureAdmin(req, res, next) {
@@ -10,7 +13,8 @@ export function ensureAdmin(req, res, next) {
         return next();
     }
     res.status(403).json({ 
-        message: 'Forbidden',
+        success: false,
+        errors: ['Forbidden'],
      });
 };
 

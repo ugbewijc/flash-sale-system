@@ -4,9 +4,13 @@
   "description": "",
   "main": "src/index.js",
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "node --env-file-if-exists=.env --watch src/index.js",
     "start": "node src/index.js",
+    "lint": "eslint src/**/*.js",
     "test": "NODE_ENV=testing node src/ --test --experimental-test-coverage"
   },
   "keywords": [],
@@ -24,5 +28,12 @@
     "mongoose": "^8.11.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^16.0.0"
   }
 }

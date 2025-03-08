@@ -2,17 +2,18 @@ import { body } from "express-validator";
 
 
 
+
 export function ids(field){
     return body(field)
     .isMongoId().withMessage('Invalid ID');
 }
 
-export function validStatus(field){
-    const status = ['pending','active', 'paused', 'sold out', 'closed'];
-    return body(field)
-    .default('pending')
-    .isIn(status).withMessage('Invalid product status');
-}
+// export function validStatus(field){
+//     const status = ['pending','active', 'pause', 'sold out', 'close'];
+//     return body(field)
+//     .default('pending')
+//     .isIn(status).withMessage('Invalid product status');
+// }
 
 
 /**
@@ -24,7 +25,6 @@ export function validStatus(field){
 export function validDate(field){
     return body(field)
     .toDate()
-    // .isISO8601().withMessage('Invalid start time format');
 }
 
 /**
@@ -34,7 +34,11 @@ export function validDate(field){
  */
 
 export function cleanField (field){
-    return body(field).trim().escape().toLowerCase();
+    return body(field)
+    .trim()
+    .escape()    
+    .isString().withMessage('Field must be a string')
+    .toLowerCase();
 }
 /**
  * Checks if a field is required by first cleaning the field and then ensuring it is not empty.
@@ -46,9 +50,8 @@ export function cleanField (field){
     return cleanField(field).notEmpty().withMessage(message)
  }
 
-
 export function sanitizeEmail(field, message){
-    return cleanField(field)
+    return body(field)
     .isEmail().withMessage(message)
     .normalizeEmail()
 }

@@ -147,6 +147,7 @@ All Fail Request have the structure below, with valid status code attached
    **Request Body**
    ```json
    {
+      "name":"admin_name",
       "username": "admin@domain.com",
       "password": "password",
       "role": "admin"
@@ -155,6 +156,7 @@ All Fail Request have the structure below, with valid status code attached
    **Parameters**
    <table style="margin-left: 40px;">
       <tr><th>Parameters</th>           <th>Value</th>      <th>Data Type</th></tr>
+      <tr><td>name</td>   <td>required</td>       <td>string</td></tr>
       <tr><td>username</td>   <td>required</td>       <td>string</td></tr>
       <tr><td>password</td>        <td>required</td>       <td>string</td></tr>
       <tr><td>role</td>        <td>required</td>       <td>string</td></tr>
@@ -186,7 +188,7 @@ All Fail Request have the structure below, with valid status code attached
 - **Retrieve All Products** - *GET /api/admin/products*
    
    ---
-      Retrieve product details for all registered product. Product details includes; product id, name, price, quantity, sold quantity, Max Ordered Quantity,Sales Start Time and product status
+      Retrieve product details for all registered product. Product details includes; product id, name, price, quantity, sold quantity, Max Ordered Quantity,and sales start time
    
    ---
    **Request Header**
@@ -202,7 +204,7 @@ All Fail Request have the structure below, with valid status code attached
 - **Retrieve Product** - *GET /api/admin/products/:product_name*
    
    ---
-      Retrieve single product details. Product details includes; product id, name, price, quantity, sold quantity, Max Ordered Quantity,Sales Start Time and Product Status
+      Retrieve single product details. Product details includes; product id, name, price, quantity, sold quantity, Max Ordered Quantity and sales start time
    ---
    **Path Parameter**
    
@@ -246,7 +248,7 @@ All Fail Request have the structure below, with valid status code attached
       "price": "20.32",
       "quantity": "190", // min: 0, max: 200
       "start_time": "2025-02-04T21:25:05.483Z", // UTC
-      "moq": "5" //default: 5, min: 0, max: not more than the quantity
+      "moq": "5" //default: 5, min: 0, max: 200
    }
    ```
    **Parameters**
@@ -279,8 +281,7 @@ All Fail Request have the structure below, with valid status code attached
       "price": "20.32",
       "quantity": "190", // min: 0, max: 200
       "start_time": "2025-02-04T21:25:05.483Z", // UTC
-      "moq": "5", //default: 5, min: 0, max: not more than the quantity
-      "status":"pending"
+      "moq": "5", //default: 5, min: 0, max: 200
    }
    ```
    **Parameters**
@@ -291,20 +292,76 @@ All Fail Request have the structure below, with valid status code attached
       <tr><td>quantity</td>   <td>required</td>       <td>Number</td></tr>
       <tr><td>start_time</td>   <td>required</td>       <td>DateTime</td></tr>
       <tr><td>moq</td>   <td>optional</td>       <td>Number</td></tr>
-      <tr><td>status</td>   <td>optional</td>       <td>String</td></tr>
    </table>
    <br/>
 
-   **Note**
-      
-      Status can be changed from pending to paused or from active to paused, or from  pause to active
 ---
-<br/>
+### Leaderboard Endpoints
+---
+
+
+- **Leaderboard Dashboard** - *Get /api/leaderboard*
+   
+   ---
+      Retrieve list of all users who successfully purchased the product, sorted in chronological order based on purchase time.   
+   ---
+   **Request Header**
+
+      Content-Type : application/json
+      Cookies: session_cookies
+     
+   <br/>
+- **Customer Records** - *POST /api/leaderboard/customer*
+   
+   ---
+      Retrieve list of all products purchased by a user, sorted in chronological order based on purchase time.  
+   ---
+   **Request Header**
+
+        Content-Type : application/json
+        Cookies: session_cookies
+    
+   **Request Body**
+   ```json
+   {
+      "id": "user_id"
+   }
+   ```
+   **Parameters**
+   <table style="margin-left: 40px;">
+      <tr><th>Parameters</th>           <th>Value</th>      <th>Data Type</th></tr>
+      <tr><td>id</td>   <td>required</td>       <td>String</td></tr>
+   </table>
+   <br/>
+- **Product Records** - *POST /api/dashboard/products*
+   
+   ---
+      Retrieve list of all sakes details of a product, sorted in chronological order based on purchase time. 
+   ---
+   **Request Header**
+   
+        Content-Type : application/json
+        Cookies: session_cookies
+    
+   **Request Body**
+   ```json
+   {
+      "id": "product_id"
+   }
+   ```
+   **Parameters**
+   <table style="margin-left: 40px;">
+      <tr><th>Parameters</th>           <th>Value</th>      <th>Data Type</th></tr>
+      <tr><td>id</td>   <td>required</td>       <td>String</td></tr>
+   </table>
+   <br/>
 
 ---
 ### Customer Endpoints
 ---
 - **Customer Dashboard** - *Get /api/dashboard*
+
+   ---
   
    **Request Header**
 
@@ -314,6 +371,7 @@ All Fail Request have the structure below, with valid status code attached
    <br/>
 
 - **Register Customer** - *POST /api/register*   
+
    ---
       Register a new customer account
    
@@ -325,6 +383,7 @@ All Fail Request have the structure below, with valid status code attached
    **Request Body**
    ```json
    {
+      "name":"customer_name",
       "username": "customer@domain.com",
       "password": "password"
    }
@@ -332,6 +391,7 @@ All Fail Request have the structure below, with valid status code attached
    **Parameters**
    <table style="margin-left: 40px;">
       <tr><th>Parameters</th>           <th>Value</th>      <th>Data Type</th></tr>
+      <tr><td>name</td>   <td>required</td>       <td>string</td></tr>
       <tr><td>username</td>   <td>required</td>       <td>string</td></tr>
       <tr><td>password</td>        <td>required</td>       <td>string</td></tr>
    </table>
@@ -342,7 +402,7 @@ All Fail Request have the structure below, with valid status code attached
 
       Customer are requested to login after successful registration
    <br/>
-
+---
 - **Retrieve Products** - *GET /api/products*
    
    ---
@@ -386,9 +446,40 @@ All Fail Request have the structure below, with valid status code attached
 ---
 <br/>
 
-- **Purchase Product** - *GET /api/products/:product_name*
+- **Purchase Product** - *GET /api/cart/*
 
+   ---
+      Product cart
+   ---
+  
+   **Request Header**
 
+      Content-Type : application/json
+      Cookies: session_cookies
+     
+   <br/>
+    
+   **Request Body**
+   ```json
+   {
+      "cart": 
+      [ 
+         { "product_id": "product_id", "quantity": 1 },
+         { "product_id": "product_id", "quantity": 2 },
+         { "product_id": "product_id", "quantity": 3 }
+      ]
+   }
+   ```
+   **Parameters**
+   <table style="margin-left: 40px;">
+      <tr><th>Parameters</th>           <th>Value</th>      <th>Data Type</th></tr>
+      <tr><td>product_id</td>   <td>required</td>       <td>string</td></tr>
+      <tr><td>quantity</td>   <td>required</td>       <td>number</td></tr>
+   </table>
+
+   <br/>
+---
+<br/>
 
 
 

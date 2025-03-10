@@ -22,6 +22,7 @@ export function ids(field) {
 export function validDate(field) {
     return body(field)
         .toDate()
+        .isISO8601().withMessage('The date must be a valid date in YYYY-MM-DD format');
 }
 
 /**

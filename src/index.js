@@ -4,21 +4,41 @@
 import process from 'process';
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet'
+import helmet from 'helmet';
+import compression from 'compression';
 import passport from 'passport';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import {createServer} from 'http';
+import { Server } from 'socket.io';
+import rateLimiterMiddleware from './middleware/rateLimit.js';
 import { connectToDB } from './models/db.js';
 import { appConfig } from './config.js';
 import { apiRouter } from './routes/index.js';
 import passportConfig from './passport.js';
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server);
 
 // Connect to MongoDB
 connectToDB();
 
+//socket event
+io.on('connection', (socket) => {
+    socket.on('message', (msg) => {
+        socket.emit('message', `Hello from server; "${msg.data}" received`);
+    });
+
+    socket.on('socket status', () => {
+        socket.emit('socket status', `Hello from server; flash sales socket is online`);
+    });
+});
+
+
 // Middleware
+app.use(rateLimiterMiddleware)
+app.use(compression())
 app.use(express.json());
 app.use(helmet());
 passportConfig(passport);
@@ -80,6 +100,9 @@ process.on('unhandledRejection', (reason, promise) => {
   console.log('Index.js: Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-app.listen(appConfig.PORT, () => {
+
+server.listen(appConfig.PORT, () => {
   console.log(`Server listening on port ${appConfig.PORT}`);
 });
+
+export { io}

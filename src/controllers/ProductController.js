@@ -3,6 +3,7 @@
  */
 import { randomUUID } from 'node:crypto';
 import { matchedData, validationResult } from 'express-validator';
+import { io } from '../index.js';
 import { Product } from '../models/Products.js';
 import { Sales } from '../models/Sales.js';
 export default class ProductController {
@@ -213,6 +214,7 @@ export default class ProductController {
             productData.sold_quantity = product.sold_quantity;
             productData.quantity = productData.quantity > product.quantity ? productData.quantity : product.quantity;
             const updatedProduct = await Product.updateOne({ _id: productData.id }, productData);
+            io.emit('quantityUpdate', { id: productData.id, quantity: productData.quantity }); 
 
             if (!updatedProduct.modifiedCount) {
                 throw {

@@ -4,17 +4,39 @@
   "description": "",
   "main": "src/index.js",
   "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "node --env-file-if-exists=.env --watch src/index.js",
     "start": "node src/index.js",
+    "lint": "eslint src/**/*.js",
     "test": "NODE_ENV=testing node src/ --test --experimental-test-coverage"
   },
   "keywords": [],
   "author": "John Chioma",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "compression": "^1.8.0",
+    "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "mongoose": "^8.11.0"
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.11.0",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "rate-limiter-flexible": "^5.0.5",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^16.0.0"
   }
 }
